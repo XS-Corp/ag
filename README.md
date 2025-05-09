@@ -72,20 +72,6 @@ Federated identity system for all AG services.
 
 ---
 
-## 📦 Project Structure
-
-AG/
-├── ai/ # AG AI assistant (Flask API, core logic)
-├── xos/ # Custom OS code and configs
-├── social/ # Social network backend and frontend
-├── design/ # NeoTranslucence styles, tokens, docs
-├── auth/ # "Sign in with AG" system
-├── emulation/ # Emulators, ports, wrappers
-├── docs/ # Documentation for all major modules
-└── README.md # You're here
-
----
-
 ## 🚀 Getting Started
 
 > ⚠️ Note: Some modules are not yet public or stable.
@@ -147,4 +133,4 @@ AG is a solo-built project by XS Corp, but if you're deeply passionate about dec
 
 AG is currently closed-source. Open-source plans under MIT or AGPL are under review for partial components.
 
-## © 2025 KickedStorm / XS Corp — All rights reserved.
+## © 2025 KickedStorm / XGames Super Corporation LLC — All rights reserved.
