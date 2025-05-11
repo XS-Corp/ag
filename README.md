@@ -1,4 +1,4 @@
-# AG Ecosystem
+# AG Ecosystem (NOT TRUE NOW, MIGHT BE READY IN 2026)
 
 > A visionary, privacy-respecting, AI-driven ecosystem — from OS to social network, powered by design, autonomy, and innovation.
 
