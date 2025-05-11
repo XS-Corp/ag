@@ -2,198 +2,128 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AG Search (Beta)</title>
+  <title>AG Search</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      line-height: 1.5;
+      font-family: Arial;
+      padding: 10px;
       background: #f0f0f0;
-      color: #333;
+      color: #000;
+      margin: 0;
     }
-
     .container {
-      max-width: 800px;
+      max-width: 600px;
       margin: 0 auto;
     }
-
     .search-container {
-      padding: 20px;
+      padding: 10px;
       background: #fff;
-      border: 1px solid #ccc;
-      margin-bottom: 20px;
+      border: 1px solid #000;
     }
-
-    .search-header h2 {
-      font-size: 1.8rem;
+    h2 {
+      font-size: 18px;
       text-align: center;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
-
     .search-box {
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
-
     input[type="text"] {
       width: 100%;
-      padding: 10px;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      outline: none;
+      padding: 5px;
+      font-size: 12px;
+      border: 1px solid #000;
     }
-
     button {
-      padding: 10px 20px;
-      font-size: 1rem;
-      border: none;
-      background: #007AFF;
+      padding: 5px 10px;
+      font-size: 12px;
+      border: 1px solid #000;
+      background: #00f;
       color: #fff;
-      border-radius: 4px;
       cursor: pointer;
     }
-
-    button:hover {
-      background: #005BB5;
-    }
-
     .results-box {
       padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      border: 1px solid #000;
       background: #fff;
+      font-size: 12px;
     }
-
     .result-item {
       margin-bottom: 10px;
-      padding: 10px;
-      border-bottom: 1px solid #eee;
+      padding: 5px;
+      border-bottom: 1px solid #ccc;
     }
-
     .result-item a {
-      color: #007AFF;
-      text-decoration: none;
+      color: #00f;
       font-weight: bold;
     }
-
-    .result-item a:hover {
-      text-decoration: underline;
-    }
-
-    .result-item p {
-      margin: 5px 0;
-    }
-
     .disclaimer {
       text-align: center;
- importants      font-size: 0.8rem;
+      font-size: 10px;
       margin-top: 10px;
       color: #666;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-
-      .search-container {
-        padding: 15px;
-      }
-
-      .search-header h2 {
-        font-size: 1.4rem;
-      }
-
-      input[type="text"] {
-        font-size: 0.9rem;
-        padding: 8px;
-      }
-
-      button {
-        font-size: 0.9rem;
-        padding: 8px 15px;
-      }
-
-      .results-box {
-        font-size: 0.9rem;
-      }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="search-container">
-      <div class="search-header">
-        <h2>AG Search</h2>
-      </div>
+      <h2>AG Search</h2>
       <div class="search-box">
-        <input type="text" id="search-input" onkeydown="if(event.keyCode==13) search();" placeholder="Введите запрос...">
+        <input type="text" id="search-input" onkeydown="if(event.keyCode==13) search();" placeholder="Запрос">
         <button onclick="search()">Поиск</button>
       </div>
       <div class="results-box" id="results-box"></div>
-      <div class="disclaimer">Поиск ограничен индексом сайтов.</div>
-      <div class="disclaimer">Специальные благодарности: ShalunBalun43, UnfineDarvin, SALUTYT, peretZ.</div>
+      <div class="disclaimer">Поиск по индексу сайтов</div>
+      <div class="disclaimer">Спасибо: ShalunBalun43, UnfineDarvin, SALUTYT, peretZ</div>
     </div>
   </div>
+
+  <!-- Подключение siteIndex.js -->
+  <script src="siteIndex.js"></script>
   <script>
     function search() {
-      var searchInput = document.getElementById('search-input');
+      var input = document.getElementById('search-input');
       var resultsBox = document.getElementById('results-box');
-      var query = searchInput.value.toLowerCase().replace(/^\s+|\s+$/g, ''); // trim
+      var query = input.value.toLowerCase().replace(/^\s+|\s+$/g, '');
       resultsBox.innerHTML = '<div class="result-item">Загрузка...</div>';
 
       if (!query) {
-        resultsBox.innerHTML = '<div class="result-item">Пожалуйста, введите запрос.</div>';
+        resultsBox.innerHTML = '<div class="result-item">Введите запрос</div>';
         return;
       }
 
-      var results = [];
+      // Проверка на существование siteIndex
+      if (typeof siteIndex == 'undefined' || !siteIndex) {
+        resultsBox.innerHTML = '<div class="result-item">Ошибка: база не загружена</div>';
+        return;
+      }
+
+      var results = '';
       for (var i = 0; i < siteIndex.length; i++) {
         var site = siteIndex[i];
         var title = site.title.toLowerCase();
-        var description = site.description.toLowerCase();
-        var keywords = site.keywords;
-        var match = false;
+        var desc = site.description.toLowerCase();
 
-        if (title.indexOf(query) !== -1 || description.indexOf(query) !== -1) {
-          match = true;
-        } else {
-          for (var j = 0; j < keywords.length; j++) {
-            if (keywords[j].toLowerCase().indexOf(query) !== -1) {
-              match = true;
-              break;
-            }
-          }
-        }
-
-        if (match) {
-          results[results.length] = site;
+        // Поиск только по title и description
+        if (title.indexOf(query) != -1 || desc.indexOf(query) != -1) {
+          results += '<div class="result-item">' +
+                     '<a href="' + site.url + '" target="_blank">' + site.title + '</a>' +
+                     '<p>' + site.description + '</p>' +
+                     '</div>';
         }
       }
 
-      resultsBox.innerHTML = '';
-
-      if (results.length === 0) {
-        resultsBox.innerHTML = '<div class="result-item">Ничего не найдено.</div>';
-        return;
-      }
-
-      for (var i = 0; i < results.length; i++) {
-        var site = results[i];
-        var result = document.createElement('div');
-        result.className = 'result-item';
-        result.innerHTML = '<a href="' + site.url + '" target="_blank">' + site.title + '</a>' +
-                           '<p>' + site.description + '</p>';
-        resultsBox.appendChild(result);
+      if (!results) {
+        resultsBox.innerHTML = '<div class="result-item">Ничего не найдено</div>';
+      } else {
+        resultsBox.innerHTML = results;
       }
     }
   </script>
 </body>
 </html>
+
+
+
+
