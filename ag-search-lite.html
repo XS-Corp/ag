@@ -562,14 +562,14 @@
         return;
       }
 
+      // Поиск
       var results = '';
       for (var i = 0; i < siteIndex.length; i++) {
         var site = siteIndex[i];
         var title = site.title.toLowerCase();
         var desc = site.description.toLowerCase();
-        var keyw = site.keywords.toLowerCase();
-
-        // Поиск только по title и description
+        var keyw = site.keywords.join(', ').toLowerCase();
+      
         if (title.indexOf(query) != -1 || desc.indexOf(query) != -1 || keyw.indexOf(query) != -1) {
           results += '<div class="result-item">' +
                      '<a href="' + site.url + '" target="_blank">' + site.title + '</a>' +
