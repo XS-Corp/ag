@@ -93,7 +93,7 @@
 
     .disclaimer {
       text-align: center;
-      font-size: 0.8rem;
+ importants      font-size: 0.8rem;
       margin-top: 10px;
       color: #666;
     }
@@ -134,7 +134,7 @@
         <h2>AG Search</h2>
       </div>
       <div class="search-box">
-        <input type="text" id="search-input" placeholder="Введите запрос...">
+        <input type="text" id="search-input" onkeydown="if(event.keyCode==13) search();" placeholder="Введите запрос...">
         <button onclick="search()">Поиск</button>
       </div>
       <div class="results-box" id="results-box"></div>
@@ -142,15 +142,11 @@
       <div class="disclaimer">Специальные благодарности: ShalunBalun43, UnfineDarvin, SALUTYT, peretZ.</div>
     </div>
   </div>
-
-  <script type="module">
-    import siteIndex from './siteIndex.js';
-
-    const searchInput = document.getElementById('search-input');
-    const resultsBox = document.getElementById('results-box');
-
+  <script>
     function search() {
-      const query = searchInput.value.trim().toLowerCase();
+      var searchInput = document.getElementById('search-input');
+      var resultsBox = document.getElementById('results-box');
+      var query = searchInput.value.toLowerCase().replace(/^\s+|\s+$/g, ''); // trim
       resultsBox.innerHTML = '<div class="result-item">Загрузка...</div>';
 
       if (!query) {
@@ -158,47 +154,46 @@
         return;
       }
 
-      const results = siteIndex.filter((site) =>
-        [site.title.toLowerCase(), site.description.toLowerCase(), ...site.keywords.map((k) => k.toLowerCase())].some(
-          (field) => field.includes(query)
-        )
-      );
+      var results = [];
+      for (var i = 0; i < siteIndex.length; i++) {
+        var site = siteIndex[i];
+        var title = site.title.toLowerCase();
+        var description = site.description.toLowerCase();
+        var keywords = site.keywords;
+        var match = false;
+
+        if (title.indexOf(query) !== -1 || description.indexOf(query) !== -1) {
+          match = true;
+        } else {
+          for (var j = 0; j < keywords.length; j++) {
+            if (keywords[j].toLowerCase().indexOf(query) !== -1) {
+              match = true;
+              break;
+            }
+          }
+        }
+
+        if (match) {
+          results[results.length] = site;
+        }
+      }
 
       resultsBox.innerHTML = '';
 
       if (results.length === 0) {
-        const noResults = document.createElement('div');
-        noResults.className = 'result-item';
-        noResults.innerHTML = 'Ничего не найдено.';
-        resultsBox.appendChild(noResults);
+        resultsBox.innerHTML = '<div class="result-item">Ничего не найдено.</div>';
         return;
       }
 
-      results.forEach((site) => {
-        const result = document.createElement('div');
+      for (var i = 0; i < results.length; i++) {
+        var site = results[i];
+        var result = document.createElement('div');
         result.className = 'result-item';
-        result.innerHTML = `
-          <a href="${site.url}" target="_blank">${site.title}</a>
-          <p>${site.description}</p>
-        `;
+        result.innerHTML = '<a href="' + site.url + '" target="_blank">' + site.title + '</a>' +
+                           '<p>' + site.description + '</p>';
         resultsBox.appendChild(result);
-      });
-
-      resultsBox.scrollTop = 0;
-    }
-
-    searchInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        search();
       }
-    });
-
-    window.search = search;
+    }
   </script>
 </body>
 </html>
-
-
-
-
