@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KickedStorm</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #2c2c54, #1a1a2e);
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 5vw;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: clamp(2em, 8vw, 3.5em);
+            text-align: center;
+            margin-bottom: 4vw;
+            background: linear-gradient(90deg, #20c0ff, #0071c8);
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: slideIn 1s ease-out;
+        }
+
+        .block {
+            margin-bottom: 30px;
+            padding: 15px;
+            border-radius: 6px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        .block:nth-child(2) { animation-delay: 0.2s; }
+        .block:nth-child(3) { animation-delay: 0.4s; }
+        .block:nth-child(4) { animation-delay: 0.6s; }
+
+        .aero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: -1;
+        }
+
+        .block:hover .aero-bg {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
+        }
+
+        p, ul {
+            font-size: clamp(1em, 3vw, 1.2em);
+            position: relative;
+        }
+
+        .divider {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffffff50, transparent);
+            margin: 6vw 0;
+            animation: expand 2s ease;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 5vw;
+        }
+
+        ul li {
+            position: relative;
+            margin: 2vw 0;
+            transition: transform 0.3s ease;
+        }
+
+        ul li:hover {
+            transform: translateX(10px);
+        }
+
+        ul li:before {
+            content: "•";
+            color: #20c0ff;
+            position: absolute;
+            left: -5vw;
+        }
+
+        a {
+            color: #20c0ff;
+            text-decoration: none;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        a:hover {
+            color: #0071c8;
+            transform: scale(1.05);
+        }
+
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4vw;
+        }
+
+        .social-links a {
+            font-size: clamp(1.1em, 3.5vw, 1.3em);
+        }
+
+        /* Частицы */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(0, 217, 255, 0.2);
+            border-radius: 50%;
+            animation: float 10s infinite ease-in-out;
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+
+        @keyframes expand {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Медиа-запросы для мобильных устройств */
+        @media (max-width: 600px) {
+            body {
+                padding: 3vw;
+            }
+
+            .container {
+                width: 95%;
+            }
+
+            .block {
+                padding: 3vw;
+            }
+
+            ul {
+                padding-left: 3vw;
+            }
+
+            ul li:before {
+                left: -3vw;
+            }
+
+            .social-links {
+                flex-direction: column;
+                gap: 2vw;
+            }
+
+            .particle {
+                width: 3px !important;
+                height: 3px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles"></div>
+    <div class="container">
+        <h1>Привет, я KickedStorm</h1>
+        <div class="block">
+            <div class="aero-bg"></div>
+            <p>Программист. Дизайнер. Композитор.</p>
+            <p>Создаю всё — от портов игр на PS Vita до собственной социальной сети с ИИ, от музыкальных саундтреков до языков программирования. Я не просто изучаю технологии — я ими дышу.</p>
+            <p>Моя цель — строить инструменты, которые уважают пользователя, и проекты, которые не зависят от чужих решений. Всё, что я делаю, я делаю сам — от хостинга до кода, от идеи до релиза.</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="block">
+            <div class="aero-bg"></div>
+            <p><strong>Что я делаю:</strong></p>
+            <ul>
+                <li>Разработка: пишу на C++, Python, HTML/CSS, JavaScript. Создаю сайты, движки, эмуляторы и игры.</li>
+                <li>Порты: переношу игры на PS Vita, включая свои и чужие. GTA V на Vita — да, работаю над этим.</li>
+                <li>ИИ: создал собственного помощника AG AI — не просто чат, а основа для умной системы, которая понимает и не предаёт.</li>
+                <li>Музыка: пишу треки для своих игр и проектов. Саундтрек — это тоже код, только звучащий.</li>
+                <li>Инфраструктура: поднимаю собственные серверы, не полагаясь на облака. Всё под контролем.</li>
+            </ul>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="block">
+            <div class="aero-bg"></div>
+            <p><strong>Мои принципы:</strong></p>
+            <ul>
+                <li>Свобода кода — пишу, чтобы не зависеть от чужих решений.</li>
+                <li>Безопасность — мои системы не трекают, не шпионят, не сливают.</li>
+                <li>Эстетика важна. Даже консоль может быть красивой.</li>
+                <li>Простота в использовании — сложное должно быть простым, иначе это мусор.</li>
+            </ul>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="block">
+            <div class="aero-bg"></div>
+            <p><strong>Контакты и соцсети:</strong></p>
+            <div class="social-links">
+                <a href="https://github.com/XS-Corp" target="_blank">GitHub</a>
+                <a href="https://www.youtube.com/@KickedStormOfficial" target="_blank">YouTube</a>
+                <a href="https://x.com/xgamesllc" target="_blank">X</a>
+                <a href="https://www.reddit.com/user/KickedStorm/" target="_blank">Reddit</a>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="block">
+            <div class="aero-bg"></div>
+            <p>Легенда в процессе.</p>
+            <p>Я не стремлюсь быть в тренде — я строю свой. И если ты читаешь это — ты его только что нашёл.</p>
+        </div>
+    </div>
+
+    <script>
+        // Частицы
+        const particleContainer = document.getElementById('particles');
+        const particleCount = window.innerWidth < 600 ? 20 : 50; // Меньше частиц на мобильных
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.width = `${Math.random() * 5 + 2}px`;
+            particle.style.height = particle.style.width;
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.top = `${Math.random() * 100}vh`;
+            particle.style.animationDelay = `${Math.random() * 5}s`;
+            particleContainer.appendChild(particle);
+        }
+
+        // Плавное появление
+        window.addEventListener('scroll', () => {
+            const blocks = document.querySelectorAll('.block');
+            blocks.forEach(block => {
+                const rect = block.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                    block.style.opacity = '1';
+                    block.style.transform = 'translateY(0)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
