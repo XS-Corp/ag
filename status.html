@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Статус серверов XGames Super Corporation LLC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* Обнуление стилей */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Основной стиль страницы */
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      padding: 20px;
+      transition: background 0.3s ease, color 0.3s ease;
+      position: relative;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* Темная и светлая темы */
+    body.dark-theme {
+      background: linear-gradient(135deg, #2c2c54, #1a1a2e);
+      color: #e0e0e0;
+    }
+
+    body.light-theme {
+      background: linear-gradient(135deg, #e8f0ff, #d9e2ff);
+      color: #1f2937;
+    }
+
+    /* Частицы */
+    #particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      background: rgba(167, 199, 231, 0.5);
+      border-radius: 50%;
+      animation: float 12s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .status-container {
+      width: 100%;
+      max-width: 800px;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      animation: fadeIn 1s ease-out;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      align-items: center;
+      justify-content: center;
+    }
+
+    body.dark-theme .status-container {
+      background: rgba(15, 12, 41, 0.85);
+      backdrop-filter: blur(10px);
+    }
+
+    body.light-theme .status-container {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .status-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .status-header h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      background: linear-gradient(90deg, #72b6ff, #0059b9);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .theme-toggle {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      font-size: 1.3rem;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 4px;
+      transition: background 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .status-container h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #FF3B30;
+      text-align: center;
+    }
+
+    .status-container p {
+      font-size: 1.2rem;
+      text-align: center;
+    }
+
+    /* Адаптивность */
+    @media (max-width: 600px) {
+      .status-header h1 {
+        font-size: 1.4rem;
+      }
+
+      .theme-toggle {
+        font-size: 1.1rem;
+      }
+
+      .particle {
+        width: 2px !important;
+        height: 2px !important;
+      }
+
+      .status-container h2 {
+        font-size: 2rem;
+      }
+
+      .status-container p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body class="dark-theme">
+  <div id="particles"></div>
+  <div class="status-container">
+    <div class="status-header">
+      <h1>Статус серверов XGames Super Corporation LLC</h1>
+      <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+    </div>
+    <h2>Не работает</h2>
+    <p>В настоящее время серверы находятся на техническом обслуживании.</p>
+    <p>Ожидаемое время завершения работ: 23:00 EEST.</p>
+    <p>Приносим извинения за неудобства.</p>
+  </div>
+  <script>
+    // Создание частиц
+    const particleContainer = document.getElementById('particles');
+    const particleCount = window.innerWidth < 600 ? 10 : 30;
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      particle.style.width = `${Math.random() * 4 + 1}px`;
+      particle.style.height = particle.style.width;
+      particle.style.left = `${Math.random() * 100}vw`;
+      particle.style.top = `${Math.random() * 100}vh`;
+      particle.style.animationDelay = `${Math.random() * 5}s`;
+      particleContainer.appendChild(particle);
+    }
+
+    // Переключение темы
+    const themeToggle = document.querySelector('.theme-toggle');
+    function toggleTheme() {
+      document.body.classList.toggle('dark-theme');
+      document.body.classList.toggle('light-theme');
+      const theme = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
+      localStorage.setItem('theme', theme);
+      themeToggle.textContent = theme === 'dark' ? '🌙' : '☀️';
+    }
+
+    // Загрузка сохраненной темы
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.body.classList.add(savedTheme + '-theme');
+    themeToggle.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+  </script>
+</body>
+</html>
