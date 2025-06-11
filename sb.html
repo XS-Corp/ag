@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shadowbound</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Raleway:wght@300;400;700&display=swap');
 
         * {
             margin: 0;
@@ -13,31 +13,176 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary-color: #00ff00;
+            --text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            --glow-effect: 0 0 20px rgba(0, 255, 0, 0.3);
+            --hover-scale: scale(1.05);
+            --hover-scale-strong: scale(1.1);
+            --transition-smooth: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --glass-background: rgba(0, 255, 0, 0.1);
+            --glass-border: rgba(0, 255, 0, 0.2);
+            --glass-shadow: rgba(0, 255, 0, 0.15);
+        }
+
         body {
-            background: linear-gradient(to bottom, #000, #003300) fixed;
+            background: #000;
             font-family: 'Raleway', sans-serif;
             color: #fff;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* User Info Panel */
+        .user-info {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background: rgba(0, 25, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: var(--primary-color);
+            font-family: 'Raleway', monospace;
+            font-size: 14px;
+            z-index: 1000;
+            transition: var(--transition-smooth);
+            -webkit-box-reflect: below 2px linear-gradient(transparent, rgba(0, 255, 0, 0.1));
+        }
+
+        .user-info:hover {
+            transform: var(--hover-scale);
+            background: rgba(0, 40, 0, 0.9);
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(0,51,0,0.3) 0%, transparent 60%),
+                linear-gradient(to bottom, #000, #001a00);
+            z-index: -1;
+            animation: pulseBackground 8s ease-in-out infinite;
+        }
+
+        @keyframes pulseBackground {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
         }
 
         .container {
             position: relative;
             z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Glass effect base class */
+        .glass-effect {
+            background: var(--glass-background);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 var(--glass-shadow);
+            -webkit-box-reflect: below 2px linear-gradient(transparent, rgba(0, 255, 0, 0.1));
+        }
+
+        /* Grid pattern overlay */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0,255,0,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,0,0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 0;
+            pointer-events: none;
         }
 
         h1, h2 {
-            font-size: 96px;
-            font-weight: 700;
-            color: #fff;
+            font-family: 'Cinzel', serif;
             text-align: center;
+            text-transform: uppercase;
+            padding: 20px;
+            border-radius: 15px;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        h1 {
+            font-size: clamp(48px, 10vw, 96px);
+            font-weight: 700;
             margin-bottom: 20px;
+            letter-spacing: 8px;
+            text-shadow: var(--text-shadow);
+            animation: glowText 3s ease-in-out infinite;
+            -webkit-box-reflect: below 2px linear-gradient(transparent, rgba(0, 255, 0, 0.1));
+        }
+
+        h2 {
+            font-size: clamp(36px, 8vw, 72px);
+            font-weight: 700;
+            margin-bottom: 40px;
+            letter-spacing: 4px;
+            -webkit-box-reflect: below 2px linear-gradient(transparent, rgba(0, 255, 0, 0.1));
+        }
+
+        h1:hover, h2:hover {
+            transform: var(--hover-scale);
+            background: var(--glass-background);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--glass-border);
         }
 
         p {
-            font-size: 24px;
+            font-size: clamp(18px, 3vw, 24px);
             color: #fff;
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            font-weight: 300;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 20px;
+            border-radius: 10px;
+            transition: var(--transition-smooth);
+            -webkit-box-reflect: below 2px linear-gradient(transparent, rgba(0, 255, 0, 0.05));
+        }
+
+        p:hover {
+            transform: var(--hover-scale);
+            background: var(--glass-background);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--glass-border);
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            -webkit-box-reflect: below 2px linear-gradient(transparent, rgba(0, 255, 0, 0.05));
+        }
+
+        a:not(.neon-button):hover {
+            transform: var(--hover-scale-strong);
+            background: var(--glass-background);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 var(--glass-shadow);
         }
 
         .scroll-section {
@@ -46,10 +191,10 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 100px;
+            padding: clamp(20px, 5vw, 100px);
             opacity: 0;
             transform: translateY(50px);
-            transition: opacity 1s, transform 1s;
+            transition: var(--transition-smooth);
         }
 
         .scroll-section.visible {
@@ -57,28 +202,35 @@
             transform: translateY(0);
         }
 
+        /* Enhanced neon button with liquid glass effect */
         .neon-button {
             position: relative;
             display: inline-block;
             padding: 40px 60px;
             margin: 40px 0;
-            color: #00ff00;
+            color: var(--primary-color);
             text-decoration: none;
             text-transform: uppercase;
-            transition: 0.5s;
             letter-spacing: 6px;
             overflow: hidden;
             font-size: 32px;
+            transition: var(--transition-smooth);
+            background: rgba(0, 255, 0, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            border-radius: 15px;
+            -webkit-box-reflect: below 2px linear-gradient(transparent, rgba(0, 255, 0, 0.2));
         }
 
         .neon-button:hover {
-            background: #00ff00;
+            background: rgba(0, 255, 0, 0.2);
             color: #000;
             box-shadow: 0 0 5px #00ff00,
-                        0 0 25px #00ff00,
-                        0 0 50px #00ff00,
-                        0 0 200px #00ff00;
-            -webkit-box-reflect: below 1px linear-gradient(transparent, #0005);
+                       0 0 25px #00ff00,
+                       0 0 50px #00ff00,
+                       0 0 200px #00ff00;
+            transform: var(--hover-scale);
+            border: 1px solid rgba(0, 255, 0, 0.4);
         }
 
         .neon-button span {
@@ -96,12 +248,8 @@
         }
 
         @keyframes animate1 {
-            0% {
-                left: -100%;
-            }
-            50%, 100% {
-                left: 100%;
-            }
+            0% { left: -100%; }
+            50%, 100% { left: 100%; }
         }
 
         .neon-button span:nth-child(2) {
@@ -115,12 +263,8 @@
         }
 
         @keyframes animate2 {
-            0% {
-                top: -100%;
-            }
-            50%, 100% {
-                top: 100%;
-            }
+            0% { top: -100%; }
+            50%, 100% { top: 100%; }
         }
 
         .neon-button span:nth-child(3) {
@@ -134,12 +278,8 @@
         }
 
         @keyframes animate3 {
-            0% {
-                right: -100%;
-            }
-            50%, 100% {
-                right: 100%;
-            }
+            0% { right: -100%; }
+            50%, 100% { right: 100%; }
         }
 
         .neon-button span:nth-child(4) {
@@ -153,26 +293,47 @@
         }
 
         @keyframes animate4 {
-            0% {
-                bottom: -100%;
+            0% { bottom: -100%; }
+            50%, 100% { bottom: 100%; }
+        }
+
+        @keyframes glowText {
+            0%, 100% { text-shadow: 0 0 10px rgba(0, 255, 0, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(0, 255, 0, 0.8); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .pixel-corner {
+                width: 100px;
+                height: 100px;
             }
-            50%, 100% {
-                bottom: 100%;
+
+            .scroll-section {
+                padding: 60px 20px;
+            }
+
+            .user-info {
+                font-size: 12px;
+                padding: 10px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Grid overlay -->
+    <div class="grid-overlay"></div>
+
     <div class="container">
         <div class="scroll-section" id="header">
             <h1>Shadowbound</h1>
         </div>
         <div class="scroll-section" id="description">
             <h2>What's it</h2>
-            <p>Shadowbound is a brutal 2D pixel-art platformer with a horror twist. Your only lifeline? Light. Some lamps stay lit. Others fade out after just 3 seconds. Time your movement, plan your jumps, and don’t get caught in the dark — it’s game over.</p>
-            <p>There’s no mercy. Just raw, unforgiving gameplay that rewards precision and punishes hesitation. Want to mod the game? Use the Undertale Mod Tool — no official support, but it’s there.</p>
-            <p>If you’re looking for an easy ride, look elsewhere. But if you want a real challenge, step into the dark… and try to survive.</p>
-            <p>If you’d like to support me, you can send any amount to <a href="https://www.donationalerts.com/r/kickedstormofficial">https://www.donationalerts.com/r/kickedstormofficial</a>.</p>
+            <p>Shadowbound is a brutal 2D pixel-art platformer with a horror twist. Your only lifeline? Light. Some lamps stay lit. Others fade out after just 3 seconds. Time your movement, plan your jumps, and don't get caught in the dark — it's game over.</p>
+            <p>There's no mercy. Just raw, unforgiving gameplay that rewards precision and punishes hesitation. Want to mod the game? Use the Undertale Mod Tool — no official support, but it's there.</p>
+            <p>If you're looking for an easy ride, look elsewhere. But if you want a real challenge, step into the dark… and try to survive.</p>
+            <p>If you'd like to support me, you can send any amount to <a href="https://www.donationalerts.com/r/kickedstormofficial">https://www.donationalerts.com/r/kickedstormofficial</a>.</p>
         </div>
         <div class="scroll-section" id="download">
             <a href="https://gamejolt.com/games/shadowbound/998767" class="neon-button">
@@ -184,6 +345,7 @@
             </a>
         </div>
     </div>
+
     <script>
         const sections = document.querySelectorAll('.scroll-section');
 
@@ -191,8 +353,6 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                } else {
-                    entry.target.classList.remove('visible');
                 }
             });
         }, {
@@ -202,6 +362,17 @@
         sections.forEach(section => {
             observer.observe(section);
         });
+
+        // Update time
+        function updateDateTime() {
+            const now = new Date();
+            const formatted = now.toISOString().replace('T', ' ').substring(0, 19);
+            document.querySelector('.user-info div:first-child').textContent = 
+                `Current Date: ${formatted}`;
+        }
+
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
     </script>
 </body>
 </html>
