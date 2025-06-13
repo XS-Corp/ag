@@ -560,7 +560,7 @@
     async function getAIResponse(query) {
       const apiKey = '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';
       const model = 'mistralai/Mixtral-8x7B-Instruct-v0.1';
-      const prompt = `Ты AG AI Mini, умный ассистент. Дай максимально краткий ответ на вопрос пользователя на русском языке (не более 1-2 предложений). Если нужны источники, укажи их в формате: [Источник: <название>].\n\nВопрос: ${query}`;
+      const prompt = `You are a smart assistant. Answer the user's question in English (no more than 1-2 sentences). Specify sources in the format: [Source: <name>].\n\nQuestion: ${query}`;
 
       try {
         const response = await fetch(`https://api-inference.huggingface.co/models/${model}`, {
@@ -587,10 +587,10 @@
         if (data && data[0] && data[0].generated_text) {
           return data[0].generated_text.replace(prompt, '').trim();
         }
-        return 'Не удалось получить ответ от ИИ.';
+        return 'Unable to get response from AI.';
       } catch (error) {
         console.error('AI API Error:', error);
-        return 'Ошибка при получении ответа от ИИ.';
+        return 'Error receiving response from AI.';
       }
     }
 
@@ -600,7 +600,7 @@
       const resultsBox = document.getElementById('results-box');
       
       console.log('Search function triggered with query:', query);
-      resultsBox.innerHTML = '<div class="result-item">Загрузка...</div>';
+      resultsBox.innerHTML = '<div class="result-item">Loading...</div>';
 
       if (!query) {
         resultsBox.innerHTML = '<div class="result-item">Please, enter request.</div>';
