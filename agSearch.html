@@ -521,6 +521,7 @@
     </div>
     <div class="results-box" id="results-box"></div>
     <div class="disclaimer">Are you ever tried to play Shadowbound?</div>
+    <div class="disclaimer">Special thanks: ShalunBalun43, UnfineDarvin, SALUTYT, peretZ.</div>
   </div>
 
   <script>
@@ -608,7 +609,6 @@
       }
 
       try {
-        // Получаем ответ от ИИ
         const aiResponse = await getAIResponse(query);
         resultsBox.innerHTML = '';
 
@@ -618,7 +618,6 @@
         aiResult.innerHTML = `<p><strong>Short AI review:</strong> ${aiResponse}</p>`;
         resultsBox.appendChild(aiResult);
 
-        // Запрос к Google Custom Search API
         const searchURL = `https://www.googleapis.com/customsearch/v1?key=${XS_API_KEY}&cx=${SEARCH_ENGINE_API}&q=${encodeURIComponent(query)}`;
         
         const response = await fetch(searchURL);
